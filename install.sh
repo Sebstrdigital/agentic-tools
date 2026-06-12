@@ -129,6 +129,19 @@ for f in "$SCRIPT_DIR"/docs/*.md; do
     fi
 done
 
+# Install skills (each subdirectory becomes ~/.claude/skills/<skill-name>/)
+# Only adds/updates repo-managed skill dirs — never touches unmanaged skills.
+for skilldir in "$SCRIPT_DIR"/skills/*/; do
+    [ -d "$skilldir" ] || continue
+    skillname="$(basename "$skilldir")"
+    [ "$skillname" = "_deprecated" ] && continue
+    echo "Skills → $CLAUDE_DIR/skills/$skillname/"
+    for f in "$skilldir"*.md; do
+        [ -f "$f" ] && check_and_install "$f" "$CLAUDE_DIR/skills/$skillname"
+    done
+    echo ""
+done
+
 # Summary
 echo "────────────────────────────────────────"
 echo -e "  ${GREEN}Added:${NC}    $installed"
