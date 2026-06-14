@@ -11,12 +11,12 @@ Review Claude Code skill files (commands, agents) for quality, structure, and ef
 
 ## Usage
 
-- `/skill-review` — Review all skills in `~/.claude/commands/`
+- `/skill-review` — Review all skills in `~/.claude/skills/`
 - `/skill-review <path>` — Review a specific skill file or directory of skills
 
 ## Arguments
 
-$ARGUMENTS - Optional: path to a specific skill file or directory. Defaults to `~/.claude/commands/`.
+$ARGUMENTS - Optional: path to a specific skill file or directory. Defaults to `~/.claude/skills/`.
 
 ## Instructions
 

@@ -15,8 +15,8 @@ agentic-tools — a shareable collection of custom Claude Code agents, commands,
 
 ```
 agents/          → installs to ~/.claude/agents/
-commands/        → installs to ~/.claude/commands/
 docs/            → installs to ~/.claude/docs/
+skills/          → category-first source; installs to ~/.claude/skills/
 install.sh       → installer script
 ```
 
@@ -46,9 +46,9 @@ The script checks both the original filename and the prefixed filename on subseq
 
 ## Adding New Files
 
-When adding new agents, commands, or docs:
+When adding new agents, skills, or docs:
 1. Include YAML frontmatter with `source_id: seb-claude-tools` and `version: 1.0.0`
-2. Add `name` and `description` fields for agents and commands
+2. Add `name` and `description` fields for agents and skills
 3. Update the README tables
 4. The installer picks up new files automatically (no script changes needed)
 

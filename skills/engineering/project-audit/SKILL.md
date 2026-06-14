@@ -80,19 +80,19 @@ After receiving answers, spawn ALL applicable audit agents simultaneously using 
 **Always run (spawn in parallel):**
 
 **Agent A — Security Audit**
-- Instructions: read `~/.claude/commands/security-audit.md` and follow exactly
+- Instructions: read `~/.claude/skills/security-audit/SKILL.md` and follow exactly
 - Scope: project root (or $ARGUMENTS)
 - Output: `docs/audits/03-security-audit.md`
 - Return: score X/35, verdict, top 3 findings
 
 **Agent B — Data Integrity Audit**
-- Instructions: read `~/.claude/commands/data-integrity-audit.md` and follow exactly
+- Instructions: read `~/.claude/skills/data-integrity-audit/SKILL.md` and follow exactly
 - Scope: project root (or $ARGUMENTS)
 - Output: `docs/audits/04-data-integrity-audit.md`
 - Return: score X/30, verdict, top 3 findings
 
 **Agent C — Infrastructure & Scalability Audit**
-- Instructions: read `~/.claude/commands/infra-audit.md` and follow exactly
+- Instructions: read `~/.claude/skills/infra-audit/SKILL.md` and follow exactly
 - Scope: project root (or $ARGUMENTS)
 - Context to pass: the full interview answers from Phase 2 (scale targets, hosting, budget, compliance, etc.) — Agent C should skip its own Phase 1 interview and proceed directly to Phase 2 (codebase scan) using these answers
 - Output: `docs/audits/05-infra-audit.md`
@@ -101,13 +101,13 @@ After receiving answers, spawn ALL applicable audit agents simultaneously using 
 **Run if AGENT PIPELINE: YES (spawn in parallel with A, B, C):**
 
 **Agent D — Agentic Architecture Review**
-- Instructions: read `~/.claude/commands/agent-review.md` and follow exactly
+- Instructions: read `~/.claude/skills/agent-review/SKILL.md` and follow exactly
 - Scope: project root (or $ARGUMENTS)
 - Output: `docs/audits/01-agent-review.md`
 - Return: pattern implementation score, top anti-patterns found, top 3 recommendations
 
 **Agent E — Agentic Deployment Audit**
-- Instructions: read `~/.claude/commands/agent-audit.md` and follow exactly
+- Instructions: read `~/.claude/skills/agent-audit/SKILL.md` and follow exactly
 - Scope: project root (or $ARGUMENTS)
 - Output: `docs/audits/02-agent-audit.md`
 - Return: readiness score X/23, verdict
@@ -115,7 +115,7 @@ After receiving answers, spawn ALL applicable audit agents simultaneously using 
 **Run if user opted in to code review:**
 
 **Agent F — Code Review**
-- Instructions: read `~/.claude/commands/code-review.md` and follow exactly
+- Instructions: read `~/.claude/skills/code-review/SKILL.md` and follow exactly
 - Scope: project root (or $ARGUMENTS)
 - Output: `docs/audits/06-code-review.md`
 - Return: score X/25, verdict, top 3 findings

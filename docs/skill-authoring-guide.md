@@ -23,6 +23,18 @@ Project-scoped skills can also live in:
 .claude/skills/<skill-name>/SKILL.md
 ```
 
+This repo stores source skills in category-first folders:
+
+```text
+skills/<category>/<skill-name>/SKILL.md
+```
+
+`install.sh` flattens that source layout into Claude Code's install layout:
+
+```text
+~/.claude/skills/<skill-name>/SKILL.md
+```
+
 Existing command files in `~/.claude/commands/*.md` still work and create slash commands, but new reusable workflows should usually be skills because skills can auto-trigger, bundle supporting files, and keep large references out of context until needed.
 
 ### Required Frontmatter

@@ -10,7 +10,6 @@ platforms:
     adapter: platforms/claude-code
     install_targets:
       agents: ~/.claude/agents
-      commands: ~/.claude/commands
       docs: ~/.claude/docs
       skills: ~/.claude/skills
   codex:
@@ -30,12 +29,6 @@ artifact_types:
     codex: planned
     opencode: planned
     pi-mono: planned
-  commands:
-    source: commands/*.md
-    claude-code: commands
-    codex: planned
-    opencode: planned
-    pi-mono: planned
   docs:
     source:
       - docs/*.md
@@ -45,7 +38,7 @@ artifact_types:
     opencode: planned
     pi-mono: planned
   skills:
-    source: skills/*/*.md
+    source: skills/*/*/*.md
     claude-code: skills
     codex: planned
     opencode: planned
@@ -56,3 +49,30 @@ retired_artifacts:
     - test-agent.md
     - nordic-ux-critic.md
     - seb-the-boss.md
+  commands:
+    - agent-audit.md
+    - agent-review.md
+    - brand-voice.md
+    - client-proposal.md
+    - code-review.md
+    - component.md
+    - data-integrity-audit.md
+    - debug.md
+    - deep-review.md
+    - harness-architect.md
+    - harness-build.md
+    - harness-interview.md
+    - harness-review.md
+    - harness-spec.md
+    - infra-audit.md
+    - page.md
+    - patterns.md
+    - prd.md
+    - product-context.md
+    - project-audit.md
+    - refine.md
+    - security-audit.md
+    - skill-review.md
+    - ui.md
+    - ux-audit.md
+    - ux-copy.md

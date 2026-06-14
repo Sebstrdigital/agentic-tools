@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Agentic Tools Installer
-# Installs agents, commands, skills, and docs into ~/.claude/
+# Installs agents, skills, and docs into ~/.claude/
 #
 # Safe install logic:
 #   - If target file exists with source_id: seb-claude-tools → overwrite (update)
@@ -113,6 +113,24 @@ remove_retired_agent() {
     fi
 }
 
+remove_retired_command() {
+    local filename="$1"
+    local target="$CLAUDE_DIR/commands/$filename"
+    local prefixed_target="$CLAUDE_DIR/commands/${PREFIX}${filename}"
+
+    if [ -f "$target" ] && grep -q "source_id: $SOURCE_ID" "$target" 2>/dev/null; then
+        rm "$target"
+        echo -e "  ${BLUE}removed${NC}  $filename ${GRAY}(migrated to skills)${NC}"
+        removed=$((removed + 1))
+    fi
+
+    if [ -f "$prefixed_target" ] && grep -q "source_id: $SOURCE_ID" "$prefixed_target" 2>/dev/null; then
+        rm "$prefixed_target"
+        echo -e "  ${BLUE}removed${NC}  ${PREFIX}${filename} ${GRAY}(migrated to skills)${NC}"
+        removed=$((removed + 1))
+    fi
+}
+
 echo ""
 echo "╔══════════════════════════════════════╗"
 echo "║     Agentic Tools Installer          ║"
@@ -127,13 +145,6 @@ for f in "$SCRIPT_DIR"/agents/*.md; do
 done
 for retired_agent in "${RETIRED_AGENT_FILES[@]}"; do
     remove_retired_agent "$retired_agent"
-done
-echo ""
-
-# Install commands
-echo "Commands → $CLAUDE_DIR/commands/"
-for f in "$SCRIPT_DIR"/commands/*.md; do
-    [ -f "$f" ] && check_and_install "$f" "$CLAUDE_DIR/commands"
 done
 echo ""
 
@@ -157,18 +168,22 @@ for f in "$SCRIPT_DIR"/docs/*.md; do
     fi
 done
 
-# Install skills (each subdirectory becomes ~/.claude/skills/<skill-name>/)
+# Install skills.
+# Source layout: skills/<category>/<skill-name>/
+# Install layout: ~/.claude/skills/<skill-name>/
 # Only adds/updates repo-managed skill dirs — never touches unmanaged skills.
-for skilldir in "$SCRIPT_DIR"/skills/*/; do
-    [ -d "$skilldir" ] || continue
+while IFS= read -r -d '' skillfile; do
+    skilldir="$(dirname "$skillfile")"
     skillname="$(basename "$skilldir")"
     [ "$skillname" = "_deprecated" ] && continue
+
     echo "Skills → $CLAUDE_DIR/skills/$skillname/"
-    for f in "$skilldir"*.md; do
+    remove_retired_command "$skillname.md"
+    for f in "$skilldir"/*.md; do
         [ -f "$f" ] && check_and_install "$f" "$CLAUDE_DIR/skills/$skillname"
     done
     echo ""
-done
+done < <(find "$SCRIPT_DIR"/skills -mindepth 3 -maxdepth 3 -name SKILL.md -type f -print0 | sort -z)
 
 # Summary
 echo "────────────────────────────────────────"
