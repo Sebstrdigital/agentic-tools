@@ -129,7 +129,9 @@ function appendSuggestion(input, session) {
     "",
     `Reason: ${suggestionReason(session)} with no observed skill usage.`,
     "",
-    "Suggested next step: review whether this was a one-off task, an existing skill mismatch, or a reusable workflow that deserves a draft skill.",
+    "Suggested next step: review whether this was a one-off task, an existing skill mismatch, or a reusable workflow.",
+    "",
+    "Only create a draft when the workflow is repeatable, concrete, non-duplicative, and worth preserving. Drafts stay quarantined under `.agentic-tools/skill-stewardship/drafts/` until explicitly promoted.",
     "",
   ].join("\n");
   fs.appendFileSync(suggestionsPath(input), body);

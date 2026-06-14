@@ -50,7 +50,9 @@ Record whether an approved skill change helped in the next relevant use case.
 
 - No database.
 - No service process.
+- No daemon or scheduled audit loop.
 - No autonomous live skill updates.
+- No auto-publishing generated skills.
 - No broad transcript mining by default.
 - No skill about every small habit.
 - No complex scoring model before simple evidence exists.
@@ -112,6 +114,18 @@ Track deterministic signals first:
 Do not treat task length alone as proof that a skill should exist. Long work
 can be novel, sensitive, or one-off.
 
+## Creation Gate
+
+Before suggesting a new skill, require all of the following:
+
+- The workflow is repeatable across future tasks, not just long.
+- The procedure contains concrete computer actions, tool usage, commands, or
+  file edits.
+- The candidate does not duplicate an existing skill.
+- The candidate clears a conservative confidence threshold.
+
+If any check is unclear, write a review note instead of a draft.
+
 ## Suggestions
 
 Suggestions should appear only at natural stopping points.
@@ -142,6 +156,9 @@ They should be written to a quarantined location until reviewed:
 
 Promotion requires an explicit user decision.
 
+Generated drafts must not be published or installed automatically, even when
+the model is highly confident.
+
 ## Skill Improvement
 
 Skill improvements should produce a patch or draft, not silently overwrite a
@@ -171,6 +188,25 @@ Record enough context to compare later:
 - User verdict: improved, worse, unclear.
 
 If an update does not help, roll back to the previous version.
+
+## Odysseus Lessons
+
+Odysseus proves that autoskill generation and improvement can work, but its
+implementation is a full product subsystem: live skill storage, multi-user
+ownership, UI controls, prompt injection policy, teacher escalation, and a
+nightly audit loop.
+
+Agentic Tools should borrow only the quiet guardrails:
+
+- Use a confidence floor before creating a draft.
+- Track provenance such as source, confidence, status, and last review time.
+- Check for duplicates, trivial skills, and overly broad triggers.
+- Keep publish/draft state explicit.
+- Rotate manual or offline reviews by least-recently-checked when that exists.
+- Never delete, publish, or rewrite live skills without explicit approval.
+
+Do not copy the always-on extractor, auto-publish path, database-backed
+lifecycle, or scheduled audit loop into this repo.
 
 ## Privacy
 

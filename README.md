@@ -111,6 +111,7 @@ Claude Code is the supported platform today. The repo includes a first platform 
 ### Modules
 
 Modules are optional infrastructure around the agent/skill system. They are not installed by default.
+They must stay advisory unless a user explicitly opts into stronger behavior.
 
 | Module | Purpose |
 |--------|---------|
