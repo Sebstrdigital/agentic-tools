@@ -1,3 +1,8 @@
+---
+source_id: seb-claude-tools
+version: 1.0.0
+---
+
 # Code Review Dimensions — Research Reference
 
 Compiled 2026-04-09 from CodeRabbit, SonarQube, Snyk, OWASP, Vercel, arXiv research.

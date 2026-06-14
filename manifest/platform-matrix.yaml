@@ -1,0 +1,58 @@
+schema_version: 1
+source_id: seb-claude-tools
+future_source_id: seb-ai-tools
+source_id_aliases:
+  - seb-claude-tools
+
+platforms:
+  claude-code:
+    status: supported
+    adapter: platforms/claude-code
+    install_targets:
+      agents: ~/.claude/agents
+      commands: ~/.claude/commands
+      docs: ~/.claude/docs
+      skills: ~/.claude/skills
+  codex:
+    status: planned
+    adapter: platforms/codex
+  opencode:
+    status: planned
+    adapter: platforms/opencode
+  pi-mono:
+    status: planned
+    adapter: platforms/pi-mono
+
+artifact_types:
+  agents:
+    source: agents/*.md
+    claude-code: agents
+    codex: planned
+    opencode: planned
+    pi-mono: planned
+  commands:
+    source: commands/*.md
+    claude-code: commands
+    codex: planned
+    opencode: planned
+    pi-mono: planned
+  docs:
+    source:
+      - docs/*.md
+      - docs/*/*.md
+    claude-code: docs
+    codex: planned
+    opencode: planned
+    pi-mono: planned
+  skills:
+    source: skills/*/*.md
+    claude-code: skills
+    codex: planned
+    opencode: planned
+    pi-mono: planned
+
+retired_artifacts:
+  agents:
+    - test-agent.md
+    - nordic-ux-critic.md
+    - seb-the-boss.md

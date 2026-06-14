@@ -1,6 +1,8 @@
 ---
 source_id: seb-claude-tools
 version: 1.0.0
+name: infra-audit
+description: "Infrastructure and scalability audit with discovery interview, code/config scan, gap analysis, and migration roadmap. Triggers on: infra audit, scalability audit, production readiness."
 ---
 
 # Infrastructure & Scalability Audit

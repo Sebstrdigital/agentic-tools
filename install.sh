@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Claude Tools Installer
-# Installs agents, commands, and docs into ~/.claude/
+# Installs agents, commands, skills, and docs into ~/.claude/
 #
 # Safe install logic:
 #   - If target file exists with source_id: seb-claude-tools → overwrite (update)
@@ -28,6 +28,13 @@ installed=0
 updated=0
 prefixed=0
 skipped=0
+removed=0
+
+RETIRED_AGENT_FILES=(
+    "test-agent.md"
+    "nordic-ux-critic.md"
+    "seb-the-boss.md"
+)
 
 get_version() {
     local file="$1"
@@ -88,6 +95,24 @@ check_and_install() {
     fi
 }
 
+remove_retired_agent() {
+    local filename="$1"
+    local target="$CLAUDE_DIR/agents/$filename"
+    local prefixed_target="$CLAUDE_DIR/agents/${PREFIX}${filename}"
+
+    if [ -f "$target" ] && grep -q "source_id: $SOURCE_ID" "$target" 2>/dev/null; then
+        rm "$target"
+        echo -e "  ${BLUE}removed${NC}  $filename ${GRAY}(retired)${NC}"
+        removed=$((removed + 1))
+    fi
+
+    if [ -f "$prefixed_target" ] && grep -q "source_id: $SOURCE_ID" "$prefixed_target" 2>/dev/null; then
+        rm "$prefixed_target"
+        echo -e "  ${BLUE}removed${NC}  ${PREFIX}${filename} ${GRAY}(retired)${NC}"
+        removed=$((removed + 1))
+    fi
+}
+
 echo ""
 echo "╔══════════════════════════════════════╗"
 echo "║     Claude Tools Installer           ║"
@@ -99,6 +124,9 @@ echo ""
 echo "Agents → $CLAUDE_DIR/agents/"
 for f in "$SCRIPT_DIR"/agents/*.md; do
     [ -f "$f" ] && check_and_install "$f" "$CLAUDE_DIR/agents"
+done
+for retired_agent in "${RETIRED_AGENT_FILES[@]}"; do
+    remove_retired_agent "$retired_agent"
 done
 echo ""
 
@@ -148,6 +176,7 @@ echo -e "  ${GREEN}Added:${NC}    $installed"
 echo -e "  ${BLUE}Updated:${NC}  $updated"
 echo -e "  ${GRAY}Current:${NC}  $skipped"
 echo -e "  ${YELLOW}Prefixed:${NC} $prefixed"
+echo -e "  ${BLUE}Removed:${NC}  $removed"
 echo ""
 echo "Done. Restart Claude Code to pick up changes."
 echo ""

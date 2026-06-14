@@ -1,6 +1,8 @@
 ---
 source_id: seb-claude-tools
 version: 1.0.0
+name: data-integrity-audit
+description: "Audit AI-generated query results from user question through displayed answer, checking data flow, calculations, and output faithfulness. Triggers on: data integrity audit, result correctness, audit query results."
 ---
 
 # Data Integrity & Result Correctness Audit

@@ -1,6 +1,8 @@
 ---
 source_id: seb-claude-tools
 version: 1.0.0
+name: security-audit
+description: "Security audit across auth, input validation, LLM-specific attacks, data access, APIs, secrets, and infrastructure. Triggers on: security audit, appsec review, audit security."
 ---
 
 # Security Audit

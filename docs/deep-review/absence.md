@@ -1,3 +1,8 @@
+---
+source_id: seb-claude-tools
+version: 1.0.0
+---
+
 # Deep Review Pass 4: Adversarial Absence Detection
 
 You are a hostile reviewer. Your mindset: **"What is wrong? What is MISSING?"**

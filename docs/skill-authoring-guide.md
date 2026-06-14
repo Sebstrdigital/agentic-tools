@@ -5,13 +5,25 @@ version: 1.0.0
 
 # Skill Authoring Guide
 
-Reference for writing Claude Code skills (commands). Used by `/harness-build` when generating skills for Claude Code harnesses, and as a general guide for creating new skills.
+Reference for writing Claude Code skills. Used by `/harness-build` when generating Claude Code harness skills, and as a general guide for creating new skills.
 
 ---
 
 ## File Format
 
-Skills are Markdown files with YAML frontmatter. They live in `~/.claude/commands/` (installed from `commands/` in the repo).
+Claude Code skills are folders with a required `SKILL.md` file:
+
+```text
+~/.claude/skills/<skill-name>/SKILL.md
+```
+
+Project-scoped skills can also live in:
+
+```text
+.claude/skills/<skill-name>/SKILL.md
+```
+
+Existing command files in `~/.claude/commands/*.md` still work and create slash commands, but new reusable workflows should usually be skills because skills can auto-trigger, bundle supporting files, and keep large references out of context until needed.
 
 ### Required Frontmatter
 
@@ -25,10 +37,12 @@ version: 1.0.0
 ```
 
 **Fields:**
-- `name` — lowercase, hyphenated, matches filename without `.md`
-- `description` — one line. First sentence is what it does. End with `Triggers on:` keywords so Claude knows when to invoke it.
+- `name` — lowercase, hyphenated, matches the skill directory name.
+- `description` — one line that says what the skill does and when Claude should use it. Include trigger keywords when helpful.
 - `source_id` — always `seb-claude-tools` for repo-managed skills
 - `version` — semver, used by installer to decide update vs skip
+
+The skill directory name becomes the slash command: `~/.claude/skills/deploy/SKILL.md` creates `/deploy`.
 
 ### Arguments
 
@@ -36,6 +50,18 @@ If the skill accepts arguments, end the file with:
 ```
 $ARGUMENTS - Optional: description of what arguments do
 ```
+
+For deterministic or repeatable work, prefer bundled files inside the skill folder:
+
+```text
+skill-name/
+├── SKILL.md
+├── references/
+├── scripts/
+└── assets/
+```
+
+Keep `SKILL.md` lean. Put long checklists, detailed examples, and variant-specific guidance into supporting files and tell Claude when to read them.
 
 ---
 
