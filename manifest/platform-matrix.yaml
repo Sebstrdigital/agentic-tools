@@ -1,6 +1,6 @@
 schema_version: 1
 source_id: seb-claude-tools
-future_source_id: seb-ai-tools
+future_source_id: seb-agentic-tools
 source_id_aliases:
   - seb-claude-tools
 

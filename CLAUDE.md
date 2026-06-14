@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-claude-tools — a shareable collection of custom Claude Code agents, commands, and reference docs by Sebstrdigital. Installed into `~/.claude/` via `install.sh`.
+agentic-tools — a shareable collection of custom Claude Code agents, commands, and reference docs by Sebstrdigital. Installed into `~/.claude/` via `install.sh`.
 
 ## Repository
 
-- Remote: git@github.com:Sebstrdigital/claude-tools.git
+- Remote: git@github.com:Sebstrdigital/agentic-tools.git
 - Branch: main
 
 ## Structure

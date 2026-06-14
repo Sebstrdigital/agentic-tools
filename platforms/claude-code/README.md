@@ -19,7 +19,7 @@ Managed files use:
 - `source_id: seb-claude-tools`
 - `version: 1.0.0`
 
-Future cross-platform work should introduce `seb-ai-tools` with
+Future cross-platform work should introduce `seb-agentic-tools` with
 `seb-claude-tools` as an accepted alias so existing installs keep updating.
 
 ## Cleanup

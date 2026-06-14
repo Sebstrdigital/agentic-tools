@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Claude Tools Installer
+# Agentic Tools Installer
 # Installs agents, commands, skills, and docs into ~/.claude/
 #
 # Safe install logic:
@@ -115,7 +115,7 @@ remove_retired_agent() {
 
 echo ""
 echo "╔══════════════════════════════════════╗"
-echo "║     Claude Tools Installer           ║"
+echo "║     Agentic Tools Installer          ║"
 echo "║     by Seb @ Sebstrdigital           ║"
 echo "╚══════════════════════════════════════╝"
 echo ""

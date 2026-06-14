@@ -1,6 +1,6 @@
-# Claude Tools
+# Agentic Tools
 
-Custom Claude Code agents, commands, skills, and reference docs by [@Sebstrdigital](https://github.com/Sebstrdigital).
+Custom agentic AI agents, commands, skills, and reference docs by [@Sebstrdigital](https://github.com/Sebstrdigital).
 
 ## What's Included
 
@@ -119,7 +119,7 @@ Reference docs live in `docs/` and are installed by `./install.sh`.
 ### Platforms
 
 Claude Code is the supported platform today. The repo now includes a first
-platform manifest and adapter docs as a starting point for a future `ai-tools`
+platform manifest and adapter docs as a starting point for a future `agentic-tools`
 layout that can target Claude Code, Codex, OpenCode, and Pi-mono.
 
 | File | Purpose |
@@ -130,8 +130,8 @@ layout that can target Claude Code, Codex, OpenCode, and Pi-mono.
 ## Installation
 
 ```bash
-git clone git@github.com:Sebstrdigital/claude-tools.git
-cd claude-tools
+git clone git@github.com:Sebstrdigital/agentic-tools.git
+cd agentic-tools
 ./install.sh
 ```
 
@@ -156,7 +156,7 @@ After installing, restart Claude Code to pick up changes.
 Pull the latest and re-run the installer:
 
 ```bash
-cd claude-tools
+cd agentic-tools
 git pull
 ./install.sh
 ```
@@ -166,7 +166,7 @@ The installer shows version changes, for example `v1.0.0 -> v1.1.0`, and skips f
 ## File Structure
 
 ```text
-claude-tools/
+agentic-tools/
 ├── agents/
 │   ├── builder.md
 │   ├── grunt.md
