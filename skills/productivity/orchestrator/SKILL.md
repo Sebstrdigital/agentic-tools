@@ -1,76 +1,84 @@
 ---
 source_id: seb-claude-tools
-version: 1.0.0
+version: 2.0.0
 name: orchestrator
-description: Senior-architect delegation mode — the main model (Fable) decomposes work, routes implementation to Opus/Sonnet/Haiku worker agents, reviews their output, and reserves its own reasoning for design and escalations. Use for any non-trivial task (3+ steps, multiple files, investigation + implementation). Skip for trivial edits, single-question answers, takt runs (takt has its own agent rules), and when ultracode is active (Workflow orchestration supersedes this skill).
+description: Senior-architect delegation mode — the main model decomposes work, routes it to the named worker roster (scout/builder/heavy/grunt/skeptic), and gates acceptance on evidence. Use for any non-trivial in-session task (3+ steps, multiple files, investigation + implementation). For deterministic fan-out (many items, loops, adversarial verify) hand the mechanics to the Workflow tool and keep this skill's roster and gates. Skip for trivial edits and single-question answers.
 ---
 
-# Orchestrator — Fable as Senior Architect
+# Orchestrator — main model as senior architect
 
-Fable's job: think, not type. Decompose, design, route, review, unblock.
+Main model's job: think, not type. Decompose, design, route, review, unblock.
 Workers' job: edit files, run commands, gather evidence, report back.
 
 ## Hard rules
 
-- Fable does NOT edit source files directly. Exceptions: the fix is smaller
-  than the prompt needed to delegate it (~5 lines), or the artifact is a plan/
-  skill/memory file Fable owns.
+- The orchestrator does NOT edit source files directly. Exceptions: the fix is
+  smaller than the prompt needed to delegate it (~5 lines), or the artifact is a
+  plan/skill/memory file the orchestrator owns.
 - Human-in-the-loop still applies: orchestrate only work the user approved.
   Workers never expand scope; neither does the orchestrator.
-- Takt runs are exempt — takt prompts define their own agent types and models
-  (`subagent_type: "general-purpose"`, `model: "sonnet"`). Do not override.
-- Ultracode is exempt — when ultracode is on, the Workflow tool owns
-  orchestration (fan-out, model choice, token budget). This skill stands down
-  entirely; do not layer its routing rules on top of workflow scripts.
 
-## The team (named agents in ~/.claude/agents/)
+## The roster (named agents in ~/.claude/agents/)
 
 | Agent | Model | Use for |
 |-------|-------|---------|
-| `scout` | sonnet | read-only recon: codebase investigation, tracing, external repo/doc surveys |
+| `scout` | sonnet | read-only recon: codebase investigation, tracing, external repo/doc surveys. Cannot write files — ask it to return content. |
 | `builder` | sonnet | standard implementation: stories, tests, ordinary refactors with clear DoD |
 | `heavy` | opus | hard problems: gnarly debugging, cross-cutting refactors, security-sensitive code, failed builder attempts |
-| `grunt` | haiku | mechanical: renames, doc syncs, sweeps, test-suite runs, file fetch/install |
+| `grunt` | haiku | mechanical: renames, doc syncs, sweeps, test-suite runs, exact git/shell sequences |
 | `skeptic` | opus | adversarial review of builder/heavy diffs before acceptance (read-only) |
-| Fable (self) | — | architecture only: decomposition, design decisions, reviewing reports, escalations, user-facing synthesis |
+| self | — | architecture only: decomposition, design decisions, reviewing reports, escalations, user-facing synthesis |
 
-Spawn via `subagent_type: "<agent name>"`. Fall back to
-`subagent_type: "general-purpose"` + `model` override only if a named agent
-isn't loaded yet (definitions load at session start).
+Spawn via `subagent_type: "<agent name>"` (Agent tool) or `agentType: "<agent name>"`
+(Workflow `agent()`). Fall back to `general-purpose` + `model` only if a named
+agent isn't loaded (definitions load at session start).
 
-When unsure between two tiers, pick the cheaper one; escalate the task to the
-higher tier only if the first attempt comes back wrong or stuck.
+When unsure between two tiers, pick the cheaper one; escalate only after the
+first attempt comes back wrong or stuck, and say why it failed.
+
+The same roster serves takt: `grunt` for `complexity: simple` stories,
+`builder` for complex, `heavy` for the retry. takt's own prompts
+(`~/.claude/lib/takt/`) define verifier, review gate and retro on top of it.
+
+## Two mechanics, one roster
+
+| Situation | Mechanics |
+|-----------|-----------|
+| A handful of workers, judgment between steps, user in the loop | Agent tool directly: independent workers in one message, `SendMessage` to continue one, worktree isolation when parallel workers mutate overlapping files |
+| Many items, loops, retries, adversarial verify, resume after interruption, or the user opted into `ultracode` / "use a workflow" | Workflow tool: `pipeline()` / `parallel()`, `schema` for structured returns, `agentType` from the roster, `isolation: 'worktree'` per agent, `resumeFromRunId` |
+
+Workflow owns fan-out, ordering and token budget; this skill still owns which
+agent does what and what counts as done. Do not re-implement loops by hand in
+chat when a script would do it deterministically.
+
+Worktree facts (verified 2026-09-24): Agent/Workflow worktrees live under
+`<repo>/.claude/worktrees/`, branch from the session repo's HEAD, and are NOT
+merged back automatically. The orchestrator (or a `grunt`/`builder` merge step
+with exact commands) commits, merges and removes them. Cross-repo work needs
+manual `git -C <target> worktree add`.
 
 ## Delegation contract
 
 Every worker prompt follows [DELEGATION-TEMPLATE.md](DELEGATION-TEMPLATE.md):
 context, definition of done, validation commands, report format, escalation
-rule — plus the worker-specific additions listed there.
+rule — plus the worker-specific additions listed there. With Workflow, put the
+report format in a `schema` instead of prose.
 
 ## Acceptance gates (hard — do not proceed past a failed gate)
 
-1. A diff is NOT accepted until its validation output is pasted in the
-   worker's report. "Tests pass" without output = bounce back.
-2. Implementation work (builder/heavy) is NOT merged into the main effort
-   until a `skeptic` review returns approve, or the orchestrator explicitly
-   waives review for a trivial diff and says so to the user.
+1. A diff is NOT accepted until its validation output is in the worker's
+   report. "Tests pass" without output = bounce back.
+2. Implementation work (builder/heavy) is NOT merged until a `skeptic` review
+   returns approve, or the orchestrator explicitly waives review for a trivial
+   diff and says so to the user. (In takt the Opus review gate is this step.)
 3. A second attempt at a failed task does NOT start until the failure of the
    first is understood and stated (re-route up a tier with that statement).
 
-## Orchestration mechanics
-
-- Spawn independent workers in parallel (one message, multiple Agent calls).
-- Use `subagent_type: "general-purpose"` with a `model` override per the
-  routing table. Never invent custom agent types.
-- Use worktree isolation when parallel workers mutate overlapping files.
-- Review every worker diff/report before accepting. Failed validation = bounce
-  back to the worker (SendMessage to continue it) or re-route up a tier.
-- Final user-facing summary is Fable's own synthesis — never paste a worker
-  report verbatim.
-
 ## Anti-patterns
 
-- Fable grepping/reading whole files itself to "save time" — delegate it.
+- The orchestrator grepping/reading whole files itself to "save time" — delegate it.
 - Delegating a one-line fix with a 500-word prompt — just do it.
 - Sequential workers for independent tasks — parallelize.
+- Hand-rolled retry loops in chat when a Workflow script would do it.
 - Accepting "tests pass" without the pasted output.
+- Pasting a worker report verbatim as the user-facing summary.
