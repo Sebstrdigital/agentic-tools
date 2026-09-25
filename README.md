@@ -101,12 +101,14 @@ Reference docs live in `docs/` and are installed by `./install.sh`.
 
 ### Platforms
 
-Claude Code is the supported platform today. The repo includes a first platform manifest and adapter docs as a starting point for targeting Claude Code, Codex, OpenCode, and Pi-mono.
+Claude Code is the supported installer target today. Codex has adapter docs for
+manual skill and hook setup. OpenCode and Pi-mono remain planned.
 
 | File | Purpose |
 |------|---------|
 | `manifest/platform-matrix.yaml` | Declares supported/planned platforms, install targets, artifact types, and retired repo-managed artifacts. |
 | `platforms/claude-code/README.md` | Documents the current Claude Code install paths and compatibility rules. |
+| `platforms/codex/README.md` | Documents Codex skill roots, hook locations, and current manual setup rules. |
 
 ### Modules
 
@@ -117,6 +119,7 @@ They must stay advisory unless a user explicitly opts into stronger behavior.
 |--------|---------|
 | `modules/skill-stewardship/` | Advisory skill lifecycle module for suggesting new skills, improvements, splits, redirects, retirements, and later verification. |
 | `platforms/claude-code/skill-stewardship/` | Claude Code hook wiring notes for the Skill Stewardship module. |
+| `platforms/codex/skill-stewardship/` | Codex hook wiring notes for the Skill Stewardship module. |
 
 ## Installation
 
@@ -171,7 +174,10 @@ agentic-tools/
 ├── modules/
 │   └── skill-stewardship/
 ├── platforms/
-│   └── claude-code/
+│   ├── claude-code/
+│   │   ├── README.md
+│   │   └── skill-stewardship/
+│   └── codex/
 │       ├── README.md
 │       └── skill-stewardship/
 ├── skills/

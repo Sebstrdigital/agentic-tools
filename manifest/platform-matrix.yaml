@@ -13,8 +13,13 @@ platforms:
       docs: ~/.claude/docs
       skills: ~/.claude/skills
   codex:
-    status: planned
+    status: adapter-ready
     adapter: platforms/codex
+    install_targets:
+      repo_skills: .agents/skills
+      user_skills: ~/.agents/skills
+      project_hooks: .codex/hooks.json
+      user_hooks: ~/.codex/hooks.json
   opencode:
     status: planned
     adapter: platforms/opencode
@@ -40,7 +45,13 @@ artifact_types:
   skills:
     source: skills/*/*/*.md
     claude-code: skills
-    codex: planned
+    codex: manual
+    opencode: planned
+    pi-mono: planned
+  modules:
+    source: modules/*/
+    claude-code: manual
+    codex: manual
     opencode: planned
     pi-mono: planned
 

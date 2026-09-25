@@ -7,6 +7,12 @@ Claude Code hooks. It is not installed automatically yet.
 
 Use the hook script in advisory mode first:
 
+```text
+modules/skill-stewardship/hooks/claude-code-session.js
+```
+
+That entrypoint delegates to the shared `session.js` hook logic.
+
 ```json
 {
   "hooks": {

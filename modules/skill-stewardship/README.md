@@ -12,17 +12,24 @@ The module is intentionally quiet:
 - It does not run a daemon or scheduled audit loop.
 - It writes local suggestions that a user can ignore, review, or promote.
 
-## Claude Code V1
+## Hook V1
 
 The first implementation is one advisory hook script:
 
 ```text
-modules/skill-stewardship/hooks/claude-code-session.js
+modules/skill-stewardship/hooks/session.js
 ```
 
-The hook reads Claude Code hook JSON from stdin, updates a small state file,
-and appends a suggestion when a session looks long enough to review and no
-skill usage has been observed.
+Platform entrypoints delegate to the same script:
+
+```text
+modules/skill-stewardship/hooks/claude-code-session.js
+modules/skill-stewardship/hooks/codex-session.js
+```
+
+The hook reads lifecycle hook JSON from stdin, updates a small state file, and
+appends a suggestion when a session looks long enough to review and no skill
+usage has been observed.
 
 Default output path:
 

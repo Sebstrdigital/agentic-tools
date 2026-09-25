@@ -78,13 +78,16 @@ platforms/
 
 The skills remain the product. The module observes and proposes.
 
-## Claude Code V1
+## Platform Hook V1
 
-The first Claude Code implementation should have only three moving parts:
+The first platform hook implementation should have only three moving parts:
 
 1. One hook script that tracks lightweight session signals.
 2. One local state file.
 3. One suggestion output file.
+
+Codex should use the same module shape. Platform adapters should differ only
+in hook configuration, install paths, and promotion targets.
 
 Suggested local paths:
 
