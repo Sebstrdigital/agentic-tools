@@ -62,6 +62,7 @@ Each skill has a required `SKILL.md`. Supporting files live beside it.
 | Skill | Description |
 |-------|-------------|
 | `orchestrator` | Senior-architect delegation mode for decomposing non-trivial work, routing worker agents, and reviewing output. |
+| `learn-from-video` | Turn a YouTube video and its companion sources into a cited transcript, an extraction file, and a one-page learning site. |
 | `ui` | Generate complete HTML+CSS pages in International Typographic Style. |
 | `component` | Generate self-contained UI components such as buttons, cards, modals, and tables. |
 | `page` | Generate full page layouts such as landing, pricing, dashboard, and blog pages. |
